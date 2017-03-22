@@ -1,5 +1,6 @@
 class PizzasController < ApplicationController
   before_action :set_pizza, only: [:show, :edit, :update, :destroy]
+  before_action :add_toppings, only: [:update, :create]
 
   # GET /pizzas
   # GET /pizzas.json
@@ -25,7 +26,6 @@ class PizzasController < ApplicationController
   # POST /pizzas.json
   def create
     @pizza = Pizza.new(pizza_params)
-
     respond_to do |format|
       if @pizza.save
         format.html { redirect_to @pizza, notice: 'Pizza was successfully created.' }
@@ -70,5 +70,16 @@ class PizzasController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def pizza_params
       params.require(:pizza).permit(:name, :description)
+    end
+
+    def add_toppings
+      if toppings = params["pizza"]["description"]
+        toppings = toppings.gsub(',', '').gsub('and ', '').split(' ')
+        @pizza.toppings.clear
+        toppings.each do |topping|
+          topping = Topping.find_or_create_by(name: topping)
+          @pizza.toppings << topping unless @pizza.toppings.include?(topping)
+        end
+      end
     end
 end

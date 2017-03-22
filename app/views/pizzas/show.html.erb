@@ -10,5 +10,12 @@
   <%= @pizza.description %>
 </p>
 
+<p><strong>Toppings:</strong></p>
+
+<ul>
+	<%= render partial: "topping", collection: @pizza.toppings %>
+</ul>
+
+
 <%= link_to 'Edit', edit_pizza_path(@pizza) %> |
 <%= link_to 'Back', pizzas_path %>
