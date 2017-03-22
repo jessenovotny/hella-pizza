@@ -42,9 +42,11 @@ class PizzasController < ApplicationController
   def update
     if @pizza
       @pizza.add_toppings(pizza_params).update(pizza_params)
+      @pizza.update_description
     elsif topping = Topping.find_by(id: params["topping_id"])
       @pizza = Pizza.find_by(id: params["pizza_id"])
       @pizza.toppings << topping unless @pizza.toppings.include?(topping)
+      @pizza.update_description
     end
     respond_to do |format|
       if @pizza.save

@@ -16,4 +16,20 @@ class Pizza < ApplicationRecord
     end
     self
 	end
+
+	def update_description
+		# Just for fun
+		desc = self.toppings.map{|topping| topping.name}
+		if desc.count > 3
+			desc[-1] = "and #{desc.last}"
+			desc = desc.join(', ')
+		elsif desc.count == 2
+			desc[-1] = "and #{desc.last}"
+			desc = desc.join(' ')
+		else
+			desc = desc.first
+		end
+		self.description = desc
+	end
+				
 end
