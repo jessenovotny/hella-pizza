@@ -21,6 +21,17 @@
     <%= f.text_field :description %>
   </div>
 
+  <div class="field">
+    <%= f.label "Toppings:" %>
+    <%= collection_check_boxes(:pizza, :topping_ids, Topping.all, :id, :name) %>
+  </div>
+
+  <div class="field">    
+    <%= f.fields_for :toppings, @pizza.toppings.build do |topping_fields|  %>
+      <%= topping_fields.text_field :name, placeholder: "Create New Topping" %>
+    <% end %>
+  </div>
+
   <div class="actions">
     <%= f.submit %>
   </div>

@@ -2,11 +2,20 @@ class Pizza < ApplicationRecord
 	has_many :pizza_toppings
 	has_many :toppings, through: :pizza_toppings
 
-	def add_toppings pizza_params
+	accepts_nested_attributes_for :toppings
+
+	def toppings_attributes=(topping_hash)
+    topping_hash.values.each do |attribute|
+      unless attribute.values.first.empty?
+        topping = Topping.find_or_create_by(attribute)
+        toppings << topping unless toppings.include?(topping)
+      end
+    end
+  end
+
+	def update_toppings
 		# Just for fun
-		# Will break when descriptions include info other than toppings.
-		# Would add checkbox collection to form instead
-		if toppings = pizza_params["description"]
+		if toppings = self.description
       toppings = toppings.gsub(',', '').gsub('and ', '').split(' ')
       self.toppings.clear
       toppings.each do |topping|
@@ -20,7 +29,7 @@ class Pizza < ApplicationRecord
 	def update_description
 		# Just for fun
 		desc = self.toppings.map{|topping| topping.name}
-		if desc.count > 3
+		if desc.count > 2
 			desc[-1] = "and #{desc.last}"
 			desc = desc.join(', ')
 		elsif desc.count == 2

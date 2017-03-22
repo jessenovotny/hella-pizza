@@ -15,15 +15,18 @@ class PizzasController < ApplicationController
   # GET /pizzas/new
   def new
     @pizza = Pizza.new
+    @toppings = Topping.all
   end
 
   # GET /pizzas/1/edit
   def edit
+    @toppings = Topping.all
   end
 
   # POST /pizzas
   # POST /pizzas.json
   def create
+    binding.pry
     @pizza = Pizza.new(pizza_params).add_toppings(pizza_params)
 
     respond_to do |format|
@@ -41,12 +44,16 @@ class PizzasController < ApplicationController
   # PATCH/PUT /pizzas/1.json
   def update
     if @pizza
-      @pizza.add_toppings(pizza_params).update(pizza_params)
-      @pizza.update_description
+      @pizza.update(pizza_params)
+
+      # Toggle one or the other:
+      # @pizza.update_toppings # update toppings based on description
+      # @pizza.update_description # update desc based on toppings selected
+
     elsif topping = Topping.find_by(id: params["topping_id"])
       @pizza = Pizza.find_by(id: params["pizza_id"])
       @pizza.toppings << topping unless @pizza.toppings.include?(topping)
-      @pizza.update_description
+      # @pizza.update_description # ENABLE to update desc based on toppings selected
     end
     respond_to do |format|
       if @pizza.save
@@ -77,6 +84,6 @@ class PizzasController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def pizza_params
-      params.require(:pizza).permit(:name, :description)
+      params.require(:pizza).permit(:name, :description, :toppings_attributes => [:name] , :topping_ids => [])
     end
 end
