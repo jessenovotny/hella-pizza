@@ -25,7 +25,7 @@ class PizzasController < ApplicationController
   # POST /pizzas.json
   def create
     @pizza = Pizza.new(pizza_params).add_toppings(pizza_params)
-    
+
     respond_to do |format|
       if @pizza.save
         format.html { redirect_to @pizza, notice: 'Pizza was successfully created.' }
@@ -40,9 +40,14 @@ class PizzasController < ApplicationController
   # PATCH/PUT /pizzas/1
   # PATCH/PUT /pizzas/1.json
   def update
-    @pizza.add_toppings(pizza_params)
+    if @pizza
+      @pizza.add_toppings(pizza_params).update(pizza_params)
+    elsif topping = Topping.find_by(id: params["topping_id"])
+      @pizza = Pizza.find_by(id: params["pizza_id"])
+      @pizza.toppings << topping unless @pizza.toppings.include?(topping)
+    end
     respond_to do |format|
-      if @pizza.update(pizza_params)
+      if @pizza.save
         format.html { redirect_to @pizza, notice: 'Pizza was successfully updated.' }
         format.json { render :show, status: :ok, location: @pizza }
       else
@@ -65,7 +70,7 @@ class PizzasController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_pizza
-      @pizza = Pizza.find(params[:id])
+      @pizza = Pizza.find_by(id: params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

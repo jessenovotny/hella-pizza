@@ -71,4 +71,8 @@ class ToppingsController < ApplicationController
     def topping_params
       params.require(:topping).permit(:name)
     end
+
+    def set_pizza
+      @pizza = params["pizza_id"]
+    end
 end
