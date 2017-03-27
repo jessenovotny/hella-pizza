@@ -1,24 +1,15 @@
-# README
+# Hella Pizza
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Dear Tanga Associate,
 
-Things you may want to cover:
+If you are reading this then you are likely evaluating me for your full stack developer position.
 
-* Ruby version
+This to keep in mind when reviewing this submission to your coding challenge:
 
-* System dependencies
+* Completion time: approx. 90 minutes
 
-* Configuration
+* Essential functionality was finished within an hour. The remaining time was spent adding UI feature for adding toppings to pizzas
 
-* Database creation
+* In pizza#create and pizza#update I have commented out two methods by which you can determine how the description and toppings are added to the pizza. These methods allow you to override the description with the toppings selected or override the toppings with the description entered. 
 
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+* I avoided time spent on front end styling. Based on the challenge instructions, it was assumed that the intention was to specifically demonstrate back end development and efficiency.
