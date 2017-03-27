@@ -26,8 +26,11 @@ class PizzasController < ApplicationController
   # POST /pizzas
   # POST /pizzas.json
   def create
-    binding.pry
-    @pizza = Pizza.new(pizza_params).add_toppings(pizza_params)
+    @pizza = Pizza.new(pizza_params)
+
+    # Toggle one or the other:
+    # @pizza.update_toppings # update toppings based on description
+    # @pizza.update_description # update desc based on toppings selected
 
     respond_to do |format|
       if @pizza.save

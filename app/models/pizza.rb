@@ -13,8 +13,7 @@ class Pizza < ApplicationRecord
     end
   end
 
-	def update_toppings
-		# Just for fun
+	def update_toppings # Just for fun		
 		if toppings = self.description
       toppings = toppings.gsub(',', '').gsub('and ', '').split(' ')
       self.toppings.clear
@@ -26,8 +25,7 @@ class Pizza < ApplicationRecord
     self
 	end
 
-	def update_description
-		# Just for fun
+	def update_description # Just for fun		
 		desc = self.toppings.map{|topping| topping.name}
 		if desc.count > 2
 			desc[-1] = "and #{desc.last}"
